@@ -61,4 +61,11 @@ public class ProductService implements IProductService {
         p.setAmount(p.getAmount() + amount);
         this.repository.save(p);
     }
+
+    @Override
+    public void removeAmount(long id, long amount) throws NotFoundException {
+        Product p = this.getById(id);
+        p.setAmount(p.getAmount() - amount);
+        this.repository.save(p);
+    }
 }
