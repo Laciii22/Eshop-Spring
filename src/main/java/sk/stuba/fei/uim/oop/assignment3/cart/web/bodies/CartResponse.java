@@ -6,14 +6,16 @@ import lombok.Setter;
 import sk.stuba.fei.uim.oop.assignment3.cart.data.Cart;
 import sk.stuba.fei.uim.oop.assignment3.shoppinglist.data.ShoppingList;
 
+import java.util.List;
+
 @Getter
-@Setter
-@NoArgsConstructor
 public class CartResponse {
-    private Long productId;
-    private Long amount;
-    public CartResponse(ShoppingList shoppingList){
-        this.productId = shoppingList.getProductId();
-        this.amount = shoppingList.getAmount();
+   private Long id;
+   private List<ShoppingList> shoppingList;
+    private boolean payed;
+    public CartResponse(Cart c){
+        this.id = c.getId();
+        this.shoppingList = c.getShoppingList();
+        this.payed = c.isPayed();
     }
 }

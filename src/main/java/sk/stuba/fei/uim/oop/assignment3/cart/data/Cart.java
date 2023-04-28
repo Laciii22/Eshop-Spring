@@ -5,6 +5,7 @@ import lombok.Setter;
 import sk.stuba.fei.uim.oop.assignment3.shoppinglist.data.ShoppingList;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,8 +16,13 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<ShoppingList> shoppingList;
 
     private boolean payed;
+
+    public Cart() {
+        shoppingList = new ArrayList<>();
+        payed = false;
+    }
 }

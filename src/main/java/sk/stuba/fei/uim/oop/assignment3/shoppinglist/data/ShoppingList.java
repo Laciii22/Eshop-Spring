@@ -22,10 +22,8 @@ public class ShoppingList {
     @ManyToOne
     private Cart cart;
 
-    public ShoppingList(ShoppingListRequest r , Cart c){
+    public ShoppingList(ShoppingListRequest r){
         this.productId = r.getProductId();
         this.amount = r.getAmount();
-        this.cart = c;
     }
-
 }
