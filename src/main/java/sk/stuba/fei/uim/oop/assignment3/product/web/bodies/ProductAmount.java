@@ -8,7 +8,7 @@ import lombok.Setter;
 public class ProductAmount {
     private long amount;
 
-    public ProductAmount(long amount) {
+    public ProductAmount(Long amount) {
         this.amount = amount;
     }
 

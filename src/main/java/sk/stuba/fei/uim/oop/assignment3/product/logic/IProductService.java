@@ -11,15 +11,15 @@ public interface IProductService {
 
     Product create(ProductRequest body);
 
-    Product getById(long id) throws NotFoundException;
+    Product getById(Long id) throws NotFoundException;
 
-    Product update(long productId, ProductRequest request ) throws NotFoundException;
+    Product update(Long productId, ProductRequest request ) throws NotFoundException;
 
-    void delete(long productId) throws NotFoundException;
+    void delete(Long productId) throws NotFoundException;
 
-    long getAmount(long id) throws NotFoundException;
+    long getAmount(Long id) throws NotFoundException;
 
-    void addAmount(long id, long amount) throws NotFoundException;
+    void addAmount(Long id, Long amount) throws NotFoundException;
 
-    void removeAmount(long id, long amount) throws NotFoundException;
+    void removeAmount(Long id, Long amount) throws NotFoundException;
 }

@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.assignment3.cart.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
 import sk.stuba.fei.uim.oop.assignment3.shoppinglist.data.ShoppingList;
 
 import javax.persistence.*;
@@ -9,20 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Entity
 @Setter
+@Entity
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany
     private List<ShoppingList> shoppingList;
-
     private boolean payed;
 
     public Cart() {
-        shoppingList = new ArrayList<>();
-        payed = false;
+        this.shoppingList = new ArrayList<>();
+        this.payed = false;
     }
 }

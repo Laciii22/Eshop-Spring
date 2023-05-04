@@ -4,40 +4,59 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.stuba.fei.uim.oop.assignment3.cart.data.Cart;
 import sk.stuba.fei.uim.oop.assignment3.cart.data.ICartRepository;
+
 import sk.stuba.fei.uim.oop.assignment3.exception.IllegalOperationException;
 import sk.stuba.fei.uim.oop.assignment3.exception.NotFoundException;
-import sk.stuba.fei.uim.oop.assignment3.product.data.IProductRepository;
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
-import sk.stuba.fei.uim.oop.assignment3.shoppinglist.data.ShoppingList;
+import sk.stuba.fei.uim.oop.assignment3.product.logic.IProductService;
 
-import java.util.Optional;
+import sk.stuba.fei.uim.oop.assignment3.shoppinglist.logic.IShoppingListService;
+import sk.stuba.fei.uim.oop.assignment3.shoppinglist.web.bodies.ShoppingListRequest;
+
 
 @Service
 public class CartService implements ICartService {
     @Autowired
-    private ICartRepository repository;
-
+    ICartRepository cartRepository;
     @Autowired
-    private IProductRepository productRepository;
+    IProductService productService;
+    @Autowired
+    IShoppingListService shoppingListService;
 
     @Override
     public Cart create() {
-        Cart c = new Cart();
-        return this.repository.save(c);
+        return this.cartRepository.save(new Cart());
     }
 
     @Override
     public Cart getById(Long id) throws NotFoundException {
-        return this.repository.findById(id).orElseThrow(NotFoundException::new);
+        Cart cart = this.cartRepository.findCartById(id);
+        if (cart == null) {
+            throw new NotFoundException();
+        }
+        return cart;
     }
 
     @Override
     public void delete(Long id) throws NotFoundException {
-        this.repository.delete(this.getById(id));
+        this.cartRepository.delete(this.getById(id));
     }
 
     @Override
-    public Cart addNewProduct(ShoppingList productToAdd, Long id) throws NotFoundException, IllegalOperationException {
-        return null;
+    public Cart addProduct(Long cartId, ShoppingListRequest productId) throws NotFoundException, IllegalOperationException {
+        Cart cart = this.getById(cartId);
+        Product product = this.productService.getById(productId.getProductId());
+        if (cart.isPayed() || product.getAmount() < productId.getAmount()) {
+            this.cartRepository.save(cart);
+            throw new IllegalOperationException();
+        }
+        else{
+            this.cartRepository.save(cart);
+            product.setAmount(product.getAmount() - productId.getAmount());
+        }
+        return cart;
     }
 }
+
+
+

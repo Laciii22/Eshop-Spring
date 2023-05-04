@@ -239,14 +239,14 @@ class Assignment3Tests {
     }
 
     @Test
-    void addProductToCart() throws Exception {
-        TestCartResponse cart = addCart();
-        TestProductResponse product = addProduct(5L);
-        assert cart.getShoppingList().isEmpty();
-        TestCartResponse updatedCart = addProductToCart(product, cart, 2L);
-        assert updatedCart.getShoppingList().size() == 1;
-        assert updatedCart.getShoppingList().get(0).productId == product.getId();
-        assert updatedCart.getShoppingList().get(0).amount == 2L;
+        void addProductToCart() throws Exception {
+            TestCartResponse cart = addCart();
+            TestProductResponse product = addProduct(5L);
+            assert cart.getShoppingList().isEmpty();
+            TestCartResponse updatedCart = addProductToCart(product, cart, 2L);
+            assert updatedCart.getShoppingList().size() == 1;
+            assert updatedCart.getShoppingList().get(0).productId == product.getId();
+            assert updatedCart.getShoppingList().get(0).amount == 2L;
     }
 
     @Test
