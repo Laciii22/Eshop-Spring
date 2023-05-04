@@ -47,7 +47,6 @@ public class CartService implements ICartService {
         Cart cart = this.getById(cartId);
         Product product = this.productService.getById(productId.getProductId());
         if (cart.isPayed() || product.getAmount() < productId.getAmount()) {
-            this.cartRepository.save(cart);
             throw new IllegalOperationException();
         }
         else{

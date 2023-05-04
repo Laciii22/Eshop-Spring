@@ -27,7 +27,7 @@ public class ProductController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest body) throws NotFoundException {
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest body) {
         return new ResponseEntity<>(new ProductResponse(this.service.create(body)), HttpStatus.CREATED);
     }
 

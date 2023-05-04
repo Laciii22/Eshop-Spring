@@ -4,10 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sk.stuba.fei.uim.oop.assignment3.cart.data.Cart;
-import sk.stuba.fei.uim.oop.assignment3.shoppinglist.data.ShoppingList;
 import sk.stuba.fei.uim.oop.assignment3.shoppinglist.web.bodies.ShoppingListResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

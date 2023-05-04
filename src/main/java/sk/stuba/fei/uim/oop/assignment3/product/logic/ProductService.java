@@ -1,6 +1,5 @@
 package sk.stuba.fei.uim.oop.assignment3.product.logic;
 
-import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.stuba.fei.uim.oop.assignment3.exception.NotFoundException;
@@ -59,13 +58,6 @@ public class ProductService implements IProductService {
     public void addAmount(Long id, Long amount) throws NotFoundException {
         Product p = this.getById(id);
         p.setAmount(p.getAmount() + amount);
-        this.repository.save(p);
-    }
-
-    @Override
-    public void removeAmount(Long id, Long amount) throws NotFoundException {
-        Product p = this.getById(id);
-        p.setAmount(p.getAmount() - amount);
         this.repository.save(p);
     }
 }

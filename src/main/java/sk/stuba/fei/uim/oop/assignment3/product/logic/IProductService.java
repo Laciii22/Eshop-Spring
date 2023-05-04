@@ -13,7 +13,7 @@ public interface IProductService {
 
     Product getById(Long id) throws NotFoundException;
 
-    Product update(Long productId, ProductRequest request ) throws NotFoundException;
+    Product update(Long productId, ProductRequest request) throws NotFoundException;
 
     void delete(Long productId) throws NotFoundException;
 
@@ -21,5 +21,4 @@ public interface IProductService {
 
     void addAmount(Long id, Long amount) throws NotFoundException;
 
-    void removeAmount(Long id, Long amount) throws NotFoundException;
 }
