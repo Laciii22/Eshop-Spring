@@ -39,4 +39,9 @@ public class CartController {
     public CartResponse addProduct(@PathVariable("id") Long id, @RequestBody ShoppingListRequest request) throws NotFoundException, IllegalOperationException {
         return new CartResponse(this.service.addProduct(id, request));
     }
+
+    @GetMapping(value = "/{id}/pay")
+    public String pay(@PathVariable("id") Long id) throws NotFoundException, IllegalOperationException {
+        return this.service.payCart(id);
+    }
 }

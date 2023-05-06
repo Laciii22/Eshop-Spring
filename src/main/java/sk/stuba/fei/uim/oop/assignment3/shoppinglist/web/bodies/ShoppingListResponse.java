@@ -5,11 +5,11 @@ import sk.stuba.fei.uim.oop.assignment3.shoppinglist.data.ShoppingList;
 
 @Getter
 public class ShoppingListResponse {
-    private final Long id;
+    private final Long productId;
     private final Long amount;
 
     public ShoppingListResponse(ShoppingList s) {
-        this.id = s.getProductId().getId();
+        this.productId = s.getProductId();
         this.amount = s.getAmount();
     }
 }

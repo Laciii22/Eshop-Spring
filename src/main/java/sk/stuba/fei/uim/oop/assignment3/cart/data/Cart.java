@@ -20,7 +20,7 @@ public class Cart {
     private List<ShoppingList> shoppingList;
     private boolean payed;
 
-    public Cart() {
+    public Cart(){
         this.shoppingList = new ArrayList<>();
         this.payed = false;
     }

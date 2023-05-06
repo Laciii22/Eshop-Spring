@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IShoppingListRepository extends JpaRepository<ShoppingList, Long> {
-    ShoppingList findShoppingListById(Long id);
 }

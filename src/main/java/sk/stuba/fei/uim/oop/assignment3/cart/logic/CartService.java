@@ -10,51 +10,102 @@ import sk.stuba.fei.uim.oop.assignment3.exception.NotFoundException;
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.logic.IProductService;
 
-import sk.stuba.fei.uim.oop.assignment3.shoppinglist.logic.IShoppingListService;
+import sk.stuba.fei.uim.oop.assignment3.shoppinglist.data.IShoppingListRepository;
+import sk.stuba.fei.uim.oop.assignment3.shoppinglist.data.ShoppingList;
 import sk.stuba.fei.uim.oop.assignment3.shoppinglist.web.bodies.ShoppingListRequest;
-
 
 @Service
 public class CartService implements ICartService {
     @Autowired
-    ICartRepository cartRepository;
+    private ICartRepository cartRepository;
     @Autowired
-    IProductService productService;
+    private IProductService productService;
     @Autowired
-    IShoppingListService shoppingListService;
+    private IShoppingListRepository shoppingListRepository;
 
     @Override
     public Cart create() {
-        return this.cartRepository.save(new Cart());
+        Cart cart = new Cart();
+        this.cartRepository.save(cart);
+        return cart;
+
     }
 
     @Override
     public Cart getById(Long id) throws NotFoundException {
-        Cart cart = this.cartRepository.findCartById(id);
-        if (cart == null) {
-            throw new NotFoundException();
-        }
-        return cart;
+        return cartRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
     public void delete(Long id) throws NotFoundException {
-        this.cartRepository.delete(this.getById(id));
+        Cart cart = cartRepository.findById(id).orElseThrow(NotFoundException::new);
+        cartRepository.delete(cart);
     }
 
     @Override
-    public Cart addProduct(Long cartId, ShoppingListRequest productId) throws NotFoundException, IllegalOperationException {
-        Cart cart = this.getById(cartId);
-        Product product = this.productService.getById(productId.getProductId());
-        if (cart.isPayed() || product.getAmount() < productId.getAmount()) {
+    public Cart addProduct(Long cartId, ShoppingListRequest request) throws NotFoundException, IllegalOperationException {
+        Product product = this.productService.getById(request.getProductId());
+        Cart cart = getById(cartId);
+        if (cart.isPayed() || product.getAmount() < request.getAmount()) {
             throw new IllegalOperationException();
         }
-        else{
-            this.cartRepository.save(cart);
-            product.setAmount(product.getAmount() - productId.getAmount());
+
+        ShoppingList shoppingList = findShoppingListByProductId(cart, request.getProductId());
+
+        if (shoppingList != null) {
+            shoppingList.setAmount(shoppingList.getAmount() + request.getAmount());
+        } else {
+            shoppingList = createNewShoppingList(request);
+            cart.getShoppingList().add(shoppingList);
         }
+
+        this.shoppingListRepository.save(shoppingList);
+        product.setAmount(product.getAmount() - request.getAmount());
         return cart;
     }
+
+    private ShoppingList findShoppingListByProductId(Cart cart, Long productId) {
+        return cart.getShoppingList().stream().filter(s -> s.getProductId().equals(productId)).findFirst().orElse(null);
+    }
+
+    private ShoppingList createNewShoppingList(ShoppingListRequest request) {
+        ShoppingList shoppingList = new ShoppingList();
+        shoppingList.setProductId(request.getProductId());
+        shoppingList.setAmount(request.getAmount());
+        return shoppingList;
+    }
+
+
+
+
+    @Override
+    public String payCart(Long id) throws NotFoundException, IllegalOperationException {
+        Cart cart = getById(id);
+        if (cart.isPayed()) {
+            throw new IllegalOperationException();
+        }
+
+        double sum = calculateCartTotal(cart);
+        cart.setPayed(true);
+        this.cartRepository.save(cart);
+
+        return Double.toString(sum);
+    }
+
+    private double calculateCartTotal(Cart cart) throws NotFoundException {
+        double sum = 0.0;
+        for (ShoppingList shoppingList : cart.getShoppingList()) {
+            Long productId = shoppingList.getProductId();
+            Long amount = shoppingList.getAmount();
+            Product product = this.productService.getById(productId);
+            double price = product.getPrice();
+            sum += price * amount;
+        }
+        return sum;
+    }
+
+
+
 }
 
 
