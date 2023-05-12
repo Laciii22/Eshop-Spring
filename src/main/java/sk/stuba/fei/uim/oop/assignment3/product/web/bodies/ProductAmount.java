@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ProductAmount {
-    private long amount;
+    private Long amount;
 
     public ProductAmount(Long amount) {
         this.amount = amount;

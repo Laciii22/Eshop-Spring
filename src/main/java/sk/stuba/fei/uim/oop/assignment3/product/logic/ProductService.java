@@ -50,7 +50,7 @@ public class ProductService implements IProductService {
         this.repository.delete(p);
     }
 
-    public long getAmount(Long id) throws NotFoundException {
+    public Long getAmount(Long id) throws NotFoundException {
         Product p = this.getById(id);
         return p.getAmount();
     }
