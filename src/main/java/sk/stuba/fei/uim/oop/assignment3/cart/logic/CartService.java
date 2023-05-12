@@ -49,9 +49,7 @@ public class CartService implements ICartService {
         if (cart.isPayed() || product.getAmount() < request.getAmount()) {
             throw new IllegalOperationException();
         }
-
         ShoppingList shoppingList = findShoppingListByProductId(cart, request.getProductId());
-
         if (shoppingList != null) {
             shoppingList.setAmount(shoppingList.getAmount() + request.getAmount());
         } else {
